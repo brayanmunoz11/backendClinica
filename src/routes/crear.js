@@ -25,14 +25,14 @@ router.post('/crearDoctor', upload.fields([]), async (req, res, next) => {
       direccion,
       fechanac
     }
-    await pool.query('CALL heroku_ac61479f38e9e23.crearDoctor(?)', [Object.values(newDoctor)]);
-    const doctores = await pool.query('CALL heroku_ac61479f38e9e23.listarDoctores()');
+    await pool.query('CALL heroku_97268bb8b0abec4.crearDoctor(?)', [Object.values(newDoctor)]);
+    const doctores = await pool.query('CALL heroku_97268bb8b0abec4.listarDoctores()');
     res.status(201).json({
       doctores: doctores[0],
       msg: 'Doctor creado'
     });
   } catch (err) {
-    const doctores = await pool.query('CALL heroku_ac61479f38e9e23.listarDoctores()');
+    const doctores = await pool.query('CALL heroku_97268bb8b0abec4.listarDoctores()');
     let message = ''
     if (err.sqlMessage.includes('usuario_UNIQUE')) {
       message = 'El DNI ya esta registrado, ingrese uno valido'
@@ -66,15 +66,15 @@ router.post('/crearPaciente', upload.fields([]), async (req, res, next) => {
       direccion,
       fechanac
     }
-    await pool.query('CALL heroku_ac61479f38e9e23.crearPaciente(?)', [Object.values(newPaciente)]);
-    const pacientes = await pool.query('CALL heroku_ac61479f38e9e23.listarPacientes()');
+    await pool.query('CALL heroku_97268bb8b0abec4.crearPaciente(?)', [Object.values(newPaciente)]);
+    const pacientes = await pool.query('CALL heroku_97268bb8b0abec4.listarPacientes()');
 
     res.status(201).json({
       paciente: pacientes[0],
       msg: 'Paciente creado'
     });
   } catch (err) {
-    const pacientes = await pool.query('CALL heroku_ac61479f38e9e23.listarPacientes()');
+    const pacientes = await pool.query('CALL heroku_97268bb8b0abec4.listarPacientes()');
     let message = ''
     if (err.sqlMessage.includes('usuario_UNIQUE')) {
       message = 'El DNI ya esta registrado, ingrese uno valido'
@@ -98,8 +98,8 @@ router.post('/crearCama', upload.fields([]), async (req, res, next) => {
       estado: 'Ocupada',
       idUsuario: paciente
     }
-    await pool.query('CALL heroku_ac61479f38e9e23.crearCama(?)', [Object.values(newCama)]);
-    const camas = await pool.query('CALL heroku_ac61479f38e9e23.listarCamas()');
+    await pool.query('CALL heroku_97268bb8b0abec4.crearCama(?)', [Object.values(newCama)]);
+    const camas = await pool.query('CALL heroku_97268bb8b0abec4.listarCamas()');
 
     res.status(201).json({
       camas: camas[0],
@@ -121,7 +121,7 @@ router.post('/editarCama', upload.fields([]), async (req, res, next) => {
     }
     // console.log({ idCama, sala, idUsuario })
     await pool.query('UPDATE camas set ? where idcamas = ?', [newCama, id]);
-    const camas = await pool.query('CALL heroku_ac61479f38e9e23.listarCamas()');
+    const camas = await pool.query('CALL heroku_97268bb8b0abec4.listarCamas()');
 
     const newcamas = await pool.query('SELECT * from camas where idUsuario IS NULL');
     // camas[0].concat(newcamas)
@@ -153,7 +153,7 @@ router.post('/editarPaciente', upload.fields([]), async (req, res, next) => {
 
     await pool.query('UPDATE user set ? where id = ?', [userEdit, id]);
     await pool.query('UPDATE pacientes set ? where idUsuario = ?', [pacienteEdit, id]);
-    const data = await pool.query('CALL heroku_ac61479f38e9e23.listarPacientes()');
+    const data = await pool.query('CALL heroku_97268bb8b0abec4.listarPacientes()');
 
     res.status(201).json({
       data: data[0],
@@ -176,7 +176,7 @@ router.post('/editarPersonal', upload.fields([]), async (req, res, next) => {
 
     await pool.query('UPDATE user set ? where id = ?', [userEdit, id]);
     await pool.query('UPDATE doctores set ? where idUsuario = ?', [personalEdit, id]);
-    const data = await pool.query('CALL heroku_ac61479f38e9e23.listarDoctores()');
+    const data = await pool.query('CALL heroku_97268bb8b0abec4.listarDoctores()');
 
     console.log(req.body)
     res.status(201).json({

@@ -19,7 +19,7 @@ router.post('/createCita', async (req, res, next) => {
   }
 
   try {
-    const citas = await pool.query('INSERT INTO heroku_ac61479f38e9e23.citas SET ?', [newCita]);
+    const citas = await pool.query('INSERT INTO heroku_97268bb8b0abec4.citas SET ?', [newCita]);
     res.status(200).json({
       msg: 'cita creada'
     });
@@ -33,7 +33,7 @@ router.get('/citaDoctor/:iddoc', async (req, res, next) => {
   const { iddoc } = req.params
 
   try {
-    const citas = await pool.query('CALL heroku_ac61479f38e9e23.todasCitas(?)', [iddoc]);
+    const citas = await pool.query('CALL heroku_97268bb8b0abec4.todasCitas(?)', [iddoc]);
     res.status(200).json({
       citas: citas[0]
     });
@@ -47,7 +47,7 @@ router.get('/terminarCita/:idCita', async (req, res, next) => {
   const { idCita } = req.params
 
   try {
-    await pool.query('UPDATE heroku_ac61479f38e9e23.citas set ? WHERE idCita = ?', [{ estado: 'terminada' }, idCita]);
+    await pool.query('UPDATE heroku_97268bb8b0abec4.citas set ? WHERE idCita = ?', [{ estado: 'terminada' }, idCita]);
     res.status(200).json({
       msg: 'cita terminada'
     });
@@ -61,7 +61,7 @@ router.get('/listarDoctores/:especialidad/:turno', async (req, res, next) => {
   const { especialidad, turno } = req.params
   console.log({ especialidad, turno })
   try {
-    const doctores = await pool.query('SELECT u.id as idDoc, u.nombre, u.apellidoP, u.apellidoM, d.turno from heroku_ac61479f38e9e23.doctores as d JOIN heroku_ac61479f38e9e23.user as u on d.idUsuario = u.id WHERE d.especialidad = ? and d.turno = ?', [especialidad, turno]);
+    const doctores = await pool.query('SELECT u.id as idDoc, u.nombre, u.apellidoP, u.apellidoM, d.turno from heroku_97268bb8b0abec4.doctores as d JOIN heroku_97268bb8b0abec4.user as u on d.idUsuario = u.id WHERE d.especialidad = ? and d.turno = ?', [especialidad, turno]);
     res.status(200).json({
       doctores
     });
@@ -75,8 +75,8 @@ router.get('/citasUser/:iduser', async (req, res, next) => {
   const { iduser } = req.params
 
   try {
-    const citasPro = await pool.query('CALL heroku_ac61479f38e9e23.listarCitasUsuario(?,?)', [iduser, 'programada']);
-    const citasTer = await pool.query('CALL heroku_ac61479f38e9e23.listarCitasUsuario(?,?)', [iduser, 'terminada']);
+    const citasPro = await pool.query('CALL heroku_97268bb8b0abec4.listarCitasUsuario(?,?)', [iduser, 'programada']);
+    const citasTer = await pool.query('CALL heroku_97268bb8b0abec4.listarCitasUsuario(?,?)', [iduser, 'terminada']);
     res.status(200).json({
       citasPro: citasPro[0],
       citasTer: citasTer[0]
@@ -90,7 +90,7 @@ router.get('/citasUser/:iduser', async (req, res, next) => {
 
 router.get('/listarPacientes', async (req, res, next) => {
   try {
-    const pacientes = await pool.query('CALL heroku_ac61479f38e9e23.listarPacientes()');
+    const pacientes = await pool.query('CALL heroku_97268bb8b0abec4.listarPacientes()');
     res.status(200).json({
       pacientes: pacientes[0]
     });
@@ -101,7 +101,7 @@ router.get('/listarPacientes', async (req, res, next) => {
 });
 router.get('/listarCamas', async (req, res, next) => {
   try {
-    const camas = await pool.query('CALL heroku_ac61479f38e9e23.listarCamas()');
+    const camas = await pool.query('CALL heroku_97268bb8b0abec4.listarCamas()');
     const newcamas = await pool.query('SELECT * from camas where idUsuario IS NULL');
     // camas[0].concat(newcamas)
     var newc
@@ -121,7 +121,7 @@ router.get('/listarCamas', async (req, res, next) => {
 
 router.get('/listarDoctores', async (req, res, next) => {
   try {
-    const doctores = await pool.query('CALL heroku_ac61479f38e9e23.listarDoctores()');
+    const doctores = await pool.query('CALL heroku_97268bb8b0abec4.listarDoctores()');
     res.status(200).json({
       doctores: doctores[0]
     });

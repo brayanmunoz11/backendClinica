@@ -60,7 +60,7 @@ class UserServices {
     newUser.contrasena = await helpers.encryptPassword(user.contrasena);
     console.log(newUser.contrasena)
     try {
-      await pool.query('CALL heroku_ac61479f38e9e23.registrarPaciente(?) ', [Object.values(newUser)]);
+      await pool.query('CALL heroku_97268bb8b0abec4.registrarPaciente(?) ', [Object.values(newUser)]);
       userF = await pool.query('SELECT u.id, u.nombre, u.apellidoP, u.apellidoM, u.dni, u.email, u.image, u.password, u.tipoUsuario, u.direccion, u.fechanac, p.sexo, p.vigencia, p.tipoSeguro, p.centro FROM user as u join pacientes as p on u.id = p.idUsuario WHERE u.dni = ?', [newUser.dni]);
     } catch (err) {
       if (err.sqlMessage.includes('usuario_UNIQUE')) {
@@ -83,16 +83,16 @@ class UserServices {
       tema: 0,
       iduserpreference: user.id
     }
-    await pool.query('INSERT INTO heroku_ac61479f38e9e23.preferencias SET ? ', newprefe);
+    await pool.query('INSERT INTO heroku_97268bb8b0abec4.preferencias SET ? ', newprefe);
 
-    let userP = await pool.query('SELECT * FROM heroku_ac61479f38e9e23.preferencias WHERE iduserpreference = ?', [user.id]);
+    let userP = await pool.query('SELECT * FROM heroku_97268bb8b0abec4.preferencias WHERE iduserpreference = ?', [user.id]);
     return { userP: userP[0] }
   }
 
   async getPreferences(id) {
     let preferences = {}
     try {
-      preferences = await pool.query('SELECT * FROM heroku_ac61479f38e9e23.preferencias WHERE iduserpreference = ?', [id]);
+      preferences = await pool.query('SELECT * FROM heroku_97268bb8b0abec4.preferencias WHERE iduserpreference = ?', [id]);
 
     } catch (err) {
       next(err);

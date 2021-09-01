@@ -16,17 +16,17 @@ router.post('/add', upload.fields([]), async (req, res, next) => {
         };
         if (tipo == 'css'){
             newArchive.iduser = iduser
-            await pool.query('INSERT INTO heroku_ac61479f38e9e23.css set ?', [newArchive]);
+            await pool.query('INSERT INTO heroku_97268bb8b0abec4.css set ?', [newArchive]);
             valid=true;
         }
         else if (tipo == 'html'){
             newArchive.iduser2 = iduser
-            await pool.query('INSERT INTO heroku_ac61479f38e9e23.html set ?', [newArchive]);
+            await pool.query('INSERT INTO heroku_97268bb8b0abec4.html set ?', [newArchive]);
             valid=true;
         }
         else if (tipo == 'js'){
             newArchive.iduser1 = iduser
-            await pool.query('INSERT INTO heroku_ac61479f38e9e23.js set ?', [newArchive]);
+            await pool.query('INSERT INTO heroku_97268bb8b0abec4.js set ?', [newArchive]);
             valid=true;
         }
         res.status(201).json({
@@ -43,13 +43,13 @@ router.post('/list', upload.fields([]), async (req, res, next) => {
     try {
         let list
         if (tipo == 'css'){
-            list = await pool.query('SELECT * FROM heroku_ac61479f38e9e23.css WHERE iduser = ?', [id]);
+            list = await pool.query('SELECT * FROM heroku_97268bb8b0abec4.css WHERE iduser = ?', [id]);
         }
         else if (tipo == 'html'){
-            list = await pool.query('SELECT * FROM heroku_ac61479f38e9e23.html WHERE iduser2 = ?', [id]);
+            list = await pool.query('SELECT * FROM heroku_97268bb8b0abec4.html WHERE iduser2 = ?', [id]);
         }
         else if (tipo == 'js'){
-            list = await pool.query('SELECT * FROM heroku_ac61479f38e9e23.js WHERE iduser1 = ?', [id]);
+            list = await pool.query('SELECT * FROM heroku_97268bb8b0abec4.js WHERE iduser1 = ?', [id]);
         }
         res.status(201).json({
             data: list,
@@ -67,13 +67,13 @@ router.post('/delete/:id',upload.fields([]), async (req, res,next) => {
 
     try {
         if (tipo == 'css'){
-            await pool.query('DELETE FROM heroku_ac61479f38e9e23.css WHERE idcss = ?', [id]);
+            await pool.query('DELETE FROM heroku_97268bb8b0abec4.css WHERE idcss = ?', [id]);
         }
         else if (tipo == 'html'){
-            await pool.query('DELETE FROM heroku_ac61479f38e9e23.html WHERE idhtml = ?', [id]);
+            await pool.query('DELETE FROM heroku_97268bb8b0abec4.html WHERE idhtml = ?', [id]);
         }
         else if (tipo == 'js'){
-            await pool.query('DELETE FROM heroku_ac61479f38e9e23.js WHERE idjs = ?', [id]);
+            await pool.query('DELETE FROM heroku_97268bb8b0abec4.js WHERE idjs = ?', [id]);
         }
         res.status(201).json({
             message: 'file deleted'
@@ -94,13 +94,13 @@ router.post('/edit/:id', upload.fields([]), async (req, res, next)=>{
     console.log(req.body)
     try {
         if (tipo == 'css'){
-            await pool.query('UPDATE heroku_ac61479f38e9e23.css set ? WHERE idcss = ?', [newArchive, id]);
+            await pool.query('UPDATE heroku_97268bb8b0abec4.css set ? WHERE idcss = ?', [newArchive, id]);
         }
         else if (tipo == 'html'){
-            await pool.query('UPDATE heroku_ac61479f38e9e23.html set ? WHERE idhtml = ?', [newArchive, id]);
+            await pool.query('UPDATE heroku_97268bb8b0abec4.html set ? WHERE idhtml = ?', [newArchive, id]);
         }
         else if (tipo == 'js'){
-            await pool.query('UPDATE heroku_ac61479f38e9e23.js set ? WHERE idjs = ?', [newArchive, id]);
+            await pool.query('UPDATE heroku_97268bb8b0abec4.js set ? WHERE idjs = ?', [newArchive, id]);
         }
         res.status(201).json({
             message: 'file update'

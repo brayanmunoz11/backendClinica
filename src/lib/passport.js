@@ -11,7 +11,7 @@ passport.use('local.signin', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, async (req, username, password, done) => {
-  const rows = await pool.query('SELECT * FROM heroku_ac61479f38e9e23.users WHERE username = ?', [username]);
+  const rows = await pool.query('SELECT * FROM heroku_97268bb8b0abec4.users WHERE username = ?', [username]);
   if (rows.length > 0) {
     const user = rows[0];
     const validPassword = await helpers.matchPassword(password, user.password)
@@ -41,7 +41,7 @@ passport.use('local.signup', new LocalStrategy({
   };
   newUser.password = await helpers.encryptPassword(password);
   // Saving in the Database
-  const result = await pool.query('INSERT INTO heroku_ac61479f38e9e23.users SET ? ', newUser);
+  const result = await pool.query('INSERT INTO heroku_97268bb8b0abec4.users SET ? ', newUser);
   newUser.id = result.insertId;
   return done(null, newUser);
 }));
@@ -51,7 +51,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-  const rows = await pool.query('SELECT * FROM heroku_ac61479f38e9e23.users WHERE id = ?', [id]);
+  const rows = await pool.query('SELECT * FROM heroku_97268bb8b0abec4.users WHERE id = ?', [id]);
   done(null, rows[0]);
 });
 
