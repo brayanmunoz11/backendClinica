@@ -7,8 +7,15 @@ const helpers = require('../lib/helpers');
 let multer = require('multer');
 let upload = multer();
 
-const ordenarAsc = require ('../services/mergesort')
-const binarysearch = require ('../services/binarysearch')
+
+const binarysearch = require ('../services/binarysearch');
+const Queue = require('../services/colas');
+
+const quicksort = require('../services/quicksort')
+
+const heapSort = require('../services/heapsort')
+
+
 
 
 router.post('/createCita', async (req, res, next) => {
@@ -183,65 +190,77 @@ router.get('/infoPaciente/:dni', async (req, res, next) => {
 
 
 router.get('/ordenarcitas/:iddoc', async (req, res, next) => {
+  
   const {iddoc} = req.params;
   try {
     const citas = await pool.query('select u.nombre, u.apellidoP, c.idCita, c.fecha, c.turno, c.estado, c.especialidad  from citas c inner join user u on c.idPaciente = u.id Where idDoctor = ?', [iddoc]);
 
-    citas.sort((a , b)=>{
-      if(a.nombre < b.nombre){
-        return -1;
-      }
-      if(a.nombre > b.nombre){
-        return 1;
-      }
-
-      return 0;
-
-    });
-
-    console.log(citas)
-
-
-    
-    /*const citas1 = mergeSort(arr.nombre)
-    console.log(citas1)*/
-  
+   
+    console.time('QuickSort');
+    quicksort(citas,0,citas.length-1)
+    console.timeEnd('QuickSort');
 
     res.status(200).json({
       citas
     });
   }
+  
   catch (err) {
     next(err);
   }
+  
 });
 
 router.post('/buscarpaciente/:iddoc', async (req, res, next) => {
+  
   const {iddoc} = req.params;
   const {nombre} = req.body;
+ 
   console.log(req.body)
   try {
     const citas = await pool.query('select u.nombre, u.apellidoP, c.idCita, c.fecha, c.turno, c.estado, c.especialidad  from citas c inner join user u on c.idPaciente = u.id Where idDoctor = ?', [iddoc]);
     
-    citas.sort((a , b)=>{
-      if(a.nombre < b.nombre){
-        return -1;
-      }
-      if(a.nombre > b.nombre){
-        return 1;
-      }
+    console.time('Binary Search + QuickSort');
+    quicksort(citas,0,citas.length-1)
+    
 
-      return 0;
+    //console.log(citas)
 
-    });
 
     const fin = citas.length
     const b = binarysearch(citas,nombre,0,fin)
 
-    console.log(b)
+    console.timeEnd('Binary Search + QuickSort');
+ 
 
     res.status(200).json({
       b
+    });
+  }
+  catch (err) {
+    next(err);
+  }
+  
+});
+
+
+router.post('/queue/:iddoc', async (req, res, next) => {
+  const {iddoc} = req.params;
+  const {nombre} = req.body;
+ 
+  console.log(req.body)
+  try {
+    const citas = await pool.query('select u.nombre, u.apellidoP, c.idCita, c.fecha, c.turno, c.estado, c.especialidad  from citas c inner join user u on c.idPaciente = u.id Where idDoctor = ?', [iddoc]);
+    
+    const queue = new Queue()
+
+    for(i=0; i< citas.length;i++){
+      queue.enqueue(citas[i])
+    }
+    console.log(queue)
+
+    res.status(200).json({
+      queue
     });
   }
   catch (err) {
