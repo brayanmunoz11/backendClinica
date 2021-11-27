@@ -28,10 +28,10 @@ class UserServices {
     }
 
     const user1 = usuario[0];
-    const validPassword = await helpers.matchPassword(user.password, user1.password)
-    delete user1['password']
+    //const validPassword = await helpers.matchPassword(user.password, user1.password)
+    //delete user1['password']
     familiares = await pool.query('SELECT * from familiares WHERE idUsuario = ?', [user1.id]);
-    if (validPassword) {
+    if (user.password === user1.password) {
       users = user1;
       message = 'usario logeado';
       valid = true;
