@@ -4,6 +4,7 @@ const fetch = require('node-fetch')
 router.get('/', async (req, res) => {
     res.send('hello world');
 });
+
 router.get('/pac/:dni', async (req, res) => {
     const {dni} = req.params
     fetch(`https://citasenlinea.sisol.gob.pe/Account/FnGetPaciente?idTipoDocumento=1&nroDocumento=${dni}`)
