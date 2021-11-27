@@ -57,7 +57,7 @@ class UserServices {
       direccion: user.direccion,
       fechanac: user.fechanac
     }
-    newUser.contrasena = await helpers.encryptPassword(user.contrasena);
+    newUser.contrasena = user.contrasena;
     console.log(newUser.contrasena)
     try {
       await pool.query('CALL heroku_97268bb8b0abec4.registrarPaciente(?) ', [Object.values(newUser)]);
