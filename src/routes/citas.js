@@ -60,6 +60,21 @@ router.post('/createCita', async (req, res, next) => {
   }
 });
 
+router.get('/test', async (req, res, next) => {
+  
+
+  try {
+   
+    res.status(200).json({
+      msg: "OK",
+      body: "ASD"
+    });
+  }
+  catch (err) {
+    next(err);
+  }
+});
+
 router.get('/citaDoctor/:iddoc', async (req, res, next) => {
   const { iddoc } = req.params
 
