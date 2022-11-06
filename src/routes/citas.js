@@ -16,7 +16,27 @@ const quicksort = require('../services/quicksort')
 const heapSort = require('../services/heapsort')
 
 
-
+router.post('/test', async (req, res, next) => {
+  const {Signature} = req.headers
+  const { acquirer_id, commerce_id, operation_number} = req.body
+  
+  const Body = {
+    acquirer_id, 
+    commerce_id, 
+    operation_number
+  }
+  
+ 
+  try {
+      res.status(200).json({
+        msg: Signature,
+        body: Body
+      });
+    }
+  catch (err) {
+    next(err);
+  }
+});
 
 router.post('/createCita', async (req, res, next) => {
   const { idDoctor, idPaciente, fecha, turno, especialidad } = req.body
